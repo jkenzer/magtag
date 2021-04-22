@@ -12,9 +12,11 @@ DATA_SOURCE = "http://192.168.86.38:5000/"
 MSG_LOCATION = ["message"]
 
 # in seconds, we can refresh about 100 times on a battery
-TIME_BETWEEN_REFRESHES = (1 * 60 * 60) / 2  # one hour delay
+# TIME_BETWEEN_REFRESHES = (1 * 60 * 60) / 2  # one hour delay
 pin_alarm = alarm.pin.PinAlarm(
     pin=board.D15, value=False, pull=True)
+time_alarm = alarm.time.TimeAlarm(
+    monotonic_time=time.monotonic() + (1 * 60 * 60) / 2)
 
 magtag = MagTag(
     url=DATA_SOURCE,
@@ -47,5 +49,6 @@ except (ValueError, RuntimeError) as e:
 
 # wait 2 seconds for display to complete
 time.sleep(2)
-alarm.exit_and_deep_sleep_until_alarms(pin_alarm)
-alarm.exit_and_deep_sleep_until_alarms(TIME_BETWEEN_REFRESHES)
+# magtag.exit_and_deep_sleep(TIME_BETWEEN_REFRESHES)
+# alarm.exit_and_deep_sleep_until_alarms([pin_alarm, TIME_BETWEEN_REFRESHES])
+alarm.exit_and_deep_sleep_until_alarms(time_alarm, pin_alarm)
