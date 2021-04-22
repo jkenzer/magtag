@@ -3,6 +3,7 @@
 
 import time
 import alarm
+import board
 from adafruit_magtag.magtag import MagTag
 
 
@@ -12,13 +13,14 @@ MSG_LOCATION = ["message"]
 
 # in seconds, we can refresh about 100 times on a battery
 TIME_BETWEEN_REFRESHES = (1 * 60 * 60) / 2  # one hour delay
+pin_alarm = alarm.pin.PinAlarm(
+    pin=board.D15, value=False, pull=True)
 
 magtag = MagTag(
     url=DATA_SOURCE,
     json_path=(MSG_LOCATION),
 )
-pin_alarm = alarm.pin.PinAlarm(
-    pin=magtag.peripherals.buttons[0], value=False, pull=True)
+
 
 magtag.graphics.set_background("/bmps/magtag_shower_bg.bmp")
 
@@ -45,4 +47,5 @@ except (ValueError, RuntimeError) as e:
 
 # wait 2 seconds for display to complete
 time.sleep(2)
-magtag.exit_and_deep_sleep(TIME_BETWEEN_REFRESHES, pin_alarm)
+alarm.exit_and_deep_sleep_until_alarms(pin_alarm)
+alarm.exit_and_deep_sleep_until_alarms(TIME_BETWEEN_REFRESHES)
