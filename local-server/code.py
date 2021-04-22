@@ -2,7 +2,7 @@
 # Be sure to put WiFi access point info in secrets.py file to connect
 
 import time
-import random
+import alarm
 from adafruit_magtag.magtag import MagTag
 
 
@@ -17,6 +17,8 @@ magtag = MagTag(
     url=DATA_SOURCE,
     json_path=(MSG_LOCATION),
 )
+pin_alarm = alarm.pin.PinAlarm(
+    pin=magtag.peripherals.buttons[0], value=False, pull=True)
 
 magtag.graphics.set_background("/bmps/magtag_shower_bg.bmp")
 
@@ -43,4 +45,4 @@ except (ValueError, RuntimeError) as e:
 
 # wait 2 seconds for display to complete
 time.sleep(2)
-magtag.exit_and_deep_sleep(TIME_BETWEEN_REFRESHES)
+magtag.exit_and_deep_sleep(TIME_BETWEEN_REFRESHES, pin_alarm)
