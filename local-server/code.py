@@ -6,6 +6,7 @@ import alarm
 import board
 from adafruit_magtag.magtag import MagTag
 
+
 # in seconds, we can refresh about 100 times on a battery
 # TIME_BETWEEN_REFRESHES = (1 * 60 * 60) / 2  # one hour delay
 pin_alarm_a = alarm.pin.PinAlarm(
@@ -41,6 +42,16 @@ magtag = MagTag(
     json_path=(MSG_LOCATION),
 )
 
+magtag.peripherals.neopixel_disable = False
+for lights in range(0, 10):
+    for x in range(0, 4):
+        magtag.peripherals.neopixels.fill((0, 0, 0))
+        magtag.peripherals.neopixels[x] = (255, 0, 0)
+        time.sleep(0.15)
+
+magtag.peripherals.neopixels.fill((255, 0, 0))
+
+
 if not rising:
     magtag.graphics.set_background("/bmps/magtag_shower_bg.bmp")
 
@@ -64,6 +75,8 @@ try:
 except (ValueError, RuntimeError) as e:
     magtag.set_text(e)
     print("Some error occured, retrying! -", e)
+
+magtag.peripherals.neopixel_disable = False
 
 # wait 2 seconds for display to complete
 time.sleep(2)
