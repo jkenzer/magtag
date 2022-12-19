@@ -31,10 +31,10 @@ else:
     rising = False
 
 if rising:
-    DATA_SOURCE = "http://192.168.86.38:5000/rising"
+    DATA_SOURCE = "http://192.168.68.68:5000/rising"
     MSG_LOCATION = [0, "message"]
 else:
-    DATA_SOURCE = "http://192.168.86.38:5000"
+    DATA_SOURCE = "http://192.168.68.68:5000"
     MSG_LOCATION = ["message"]
 
 magtag = MagTag(
